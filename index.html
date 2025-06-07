@@ -94,7 +94,7 @@
                         <i class="ri-route-line text-primary ri-xl"></i>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-3">Navegación Autónoma</h3>
-                    <p class="text-gray-600">Algoritmos de toma de decisiones que permiten al vehículo navegar de forma independiente y adaptarse a diferentes entornos.</p>
+                    <p class="text-gray-600">Utiliza sensores siguelineas para poder seguir l ruta girando hacia la derecha o izquierda cuando sea conveniente.</p>
                 </div>
                 
                 <div class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition">
@@ -118,7 +118,7 @@
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
-                    <img src="https://readdy.ai/api/search-image?query=A%20detailed%20technical%20diagram%20showing%20the%20inner%20workings%20of%20an%20Arduino-based%20autonomous%20vehicle%20with%20clear%20labels%20for%20sensors%2C%20motors%2C%20and%20microcontroller%20connections.%20The%20diagram%20should%20be%20technical%20but%20clean%20and%20easy%20to%20understand%2C%20with%20a%20white%20background%20and%20professional%20appearance&width=600&height=500&seq=diagram1&orientation=landscape" alt="Diagrama de funcionamiento" class="rounded-lg shadow-md w-full object-cover">
+                    <img src="https://raw.githubusercontent.com/NGRPAI5/P-gina-web-vehiculo-autonomo/main/bluebot-autonomous-car-HCSR04-breadboard-diagram.png" alt="Diagrama de funcionamiento" class="rounded-lg shadow-md w-full object-cover">
                 </div>
                 
                 <div class="space-y-8">
@@ -143,7 +143,7 @@
                             <span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3">3</span>
                             Sistema de Movimiento
                         </h3>
-                        <p class="text-gray-600 pl-11">Los motores DC conectados a través de un driver L298N reciben señales de control desde el Arduino. Esto permite al vehículo avanzar, retroceder, girar a la izquierda o derecha según sea necesario para evitar obstáculos.</p>
+                        <p class="text-gray-600 pl-11">Los el motor y el servo conectados a través de un driver L298N reciben señales de control desde el Arduino. Esto permite al vehículo avanzar, girar a la izquierda o derecha según sea necesario para evitar obstáculos o seguir el camino.</p>
                     </div>
                     
                     <div>
@@ -151,7 +151,7 @@
                             <span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3">4</span>
                             Algoritmo de Navegación
                         </h3>
-                        <p class="text-gray-600 pl-11">El software implementa un algoritmo de toma de decisiones que prioriza rutas libres de obstáculos. Cuando detecta un objeto a menos de 20 cm, el vehículo se detiene, evalúa las posibles direcciones y elige la ruta más despejada.</p>
+                        <p class="text-gray-600 pl-11">El software implementa un algoritmo de toma de decisiones que prioriza rutas libres de obstáculos. Cuando detecta un objeto a menos de 10 cm, el vehículo se detiene, evalúa las posibles direcciones y elige la ruta más despejada. Por otro lado, si hay un paso de cebra, se detiene o cuando llega a un semáforo en rojo también lo hace.</p>
                     </div>
                 </div>
             </div>
@@ -167,66 +167,123 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                  <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                     <h3 class="text-xl font-semibold text-gray-900 mb-4 pb-3 border-b border-gray-200">Componentes Electrónicos</h3>
                     <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary">
-                                <i class="ri-checkbox-circle-line ri-lg"></i>
-                            </div>
-                            <div>
-                                <span class="font-medium text-gray-900">Arduino Uno R3</span>
-                                <p class="text-sm text-gray-600">Microcontrolador principal para el procesamiento de datos</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary">
-                                <i class="ri-checkbox-circle-line ri-lg"></i>
-                            </div>
-                            <div>
-                                <span class="font-medium text-gray-900">2 × Sensores Ultrasónicos HC-SR04</span>
-                                <p class="text-sm text-gray-600">Para la detección de obstáculos en diferentes ángulos</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary">
-                                <i class="ri-checkbox-circle-line ri-lg"></i>
-                            </div>
-                            <div>
-                                <span class="font-medium text-gray-900">Driver de Motor L298N</span>
-                                <p class="text-sm text-gray-600">Controlador para los motores DC</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary">
-                                <i class="ri-checkbox-circle-line ri-lg"></i>
-                            </div>
-                            <div>
-                                <span class="font-medium text-gray-900">4 × Motores DC con Ruedas</span>
-                                <p class="text-sm text-gray-600">Para el sistema de propulsión del vehículo</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary">
-                                <i class="ri-checkbox-circle-line ri-lg"></i>
-                            </div>
-                            <div>
-                                <span class="font-medium text-gray-900">Batería de 9V o Powerbank</span>
-                                <p class="text-sm text-gray-600">Fuente de alimentación para el sistema</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary">
-                                <i class="ri-checkbox-circle-line ri-lg"></i>
-                            </div>
-                            <div>
-                                <span class="font-medium text-gray-900">Cables Jumper</span>
-                                <p class="text-sm text-gray-600">Para las conexiones entre componentes</p>
-                            </div>
-                        </li>
+                      <!-- Arduino -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Arduino Uno R3</span>
+                          <p class="text-sm text-gray-600">Microcontrolador principal para el procesamiento de datos.</p>
+                        </div>
+                      </li>
+                      <!-- Sensor ultrasónico -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Sensores Ultrasónicos HC-SR04</span>
+                          <p class="text-sm text-gray-600">Para la detección de obstáculos en diferentes ángulos.</p>
+                        </div>
+                      </li>
+                      <!-- Driver de motor -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Driver de Motor L298N</span>
+                          <p class="text-sm text-gray-600">Controlador para el motor y servo.</p>
+                        </div>
+                      </li>
+                      <!-- Motores -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Motor de 3V a 300 rpm y microservo de 2g</span>
+                          <p class="text-sm text-gray-600">Para el sistema de propulsión y dirección del vehículo.</p>
+                        </div>
+                      </li>
+                      <!-- Baterías -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Batería de 9V y auxiliar de 6V</span>
+                          <p class="text-sm text-gray-600">Fuente de alimentación para el sistema.</p>
+                        </div>
+                      </li>
+                      <!-- Cables -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Cables Jumper</span>
+                          <p class="text-sm text-gray-600">Para las conexiones entre componentes.</p>
+                        </div>
+                      </li>
+                      <!-- LEDs -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">2 x LEDs blancos</span>
+                          <p class="text-sm text-gray-600">Para iluminar el camino cuando sea de noche.</p>
+                        </div>
+                      </li>
+                      <!-- LDR -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Fotoresistencia (LDR)</span>
+                          <p class="text-sm text-gray-600">Enciende o apaga las luces según la luminosidad.</p>
+                        </div>
+                      </li>
+                      <!-- Sensor siguelíneas -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Sensores siguelíneas</span>
+                          <p class="text-sm text-gray-600">Permiten guiar el coche por la carretera y girar automáticamente.</p>
+                        </div>
+                      </li>
+                      <!-- Botón -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">Botón</span>
+                          <p class="text-sm text-gray-600">Permite encender o apagar el vehículo para ahorrar batería.</p>
+                        </div>
+                      </li>
+                      <!-- Resistencias -->
+                      <li class="flex items-start">
+                        <div class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-blue-600">
+                          <i class="ri-checkbox-circle-line ri-lg"></i>
+                        </div>
+                        <div>
+                          <span class="font-medium text-gray-900">6 x Resistencias de 220Ω</span>
+                          <p class="text-sm text-gray-600">Limitan el voltaje y protegen los componentes de sobrecarga.</p>
+                        </div>
+                      </li>
                     </ul>
+                  </div>
                 </div>
-                
+
                 <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
                     <h3 class="text-xl font-semibold text-gray-900 mb-4 pb-3 border-b border-gray-200">Materiales Estructurales y Herramientas</h3>
                     <ul class="space-y-3">
@@ -235,7 +292,7 @@
                                 <i class="ri-checkbox-circle-line ri-lg"></i>
                             </div>
                             <div>
-                                <span class="font-medium text-gray-900">Chasis para Robot</span>
+                                <span class="font-medium text-gray-900">Chasis para Robot sirve tanto en 3D como comprado</span>
                                 <p class="text-sm text-gray-600">Base estructural para montar todos los componentes</p>
                             </div>
                         </li>
@@ -253,8 +310,8 @@
                                 <i class="ri-checkbox-circle-line ri-lg"></i>
                             </div>
                             <div>
-                                <span class="font-medium text-gray-900">Tornillos y Tuercas</span>
-                                <p class="text-sm text-gray-600">Para fijar componentes al chasis</p>
+                                <span class="font-medium text-gray-900">Pedazos de alambre cortados a mano y rodamientos (9 x 5 x 3) mm</span>
+                                <p class="text-sm text-gray-600">De esta manera, crearemos tornillos a medida y  los rodamientos nos servirán para que las ruedas giren libremente</p>
                             </div>
                         </li>
                         <li class="flex items-start">
@@ -302,46 +359,46 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Arduino Uno R3</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Arduino Uno R3 y cable adaptador</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€20.00</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€20.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€27.94</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€27.94</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sensores HC-SR04</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€2.50</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€5.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sensores HC-SR04, TCRT5000 y LDR KY-018</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€15.8</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€15.8</td>
                             </tr>
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Driver L298N</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€5.00</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€5.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€1.69</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€1.69</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Motores DC con Ruedas</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€3.00</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€12.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Motor, servo y sus respectivos rodamientos</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€9.86</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€9.86</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Chasis para Robot</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Placa de prototipado</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€15.00</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€15.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€5.99</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€5.99</td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Otros (cables, batería, etc.)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Otros (cables, batería y resistencias)</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€18.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">€35.41</td>
                             </tr>
                             <tr class="bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">TOTAL</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">€75.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">€96,69</td>
                             </tr>
                         </tbody>
                     </table>
@@ -362,7 +419,7 @@
                     <div class="bg-white p-6 rounded-lg shadow-sm">
                         <h3 class="text-xl font-semibold text-gray-900 mb-4">Repositorio GitHub</h3>
                         <p class="text-gray-600 mb-6">Todo el código fuente y la documentación están disponibles en nuestro repositorio público.</p>
-                        <a href="https://github.com/usuario/vehiculo-autonomo-arduino" class="bg-[#24292e] text-white px-6 py-3 rounded-button font-medium hover:bg-[#24292e]/90 transition whitespace-nowrap flex items-center justify-center w-full">
+                        <a href="https://github.com/NGRPAI5/Vehiculo_autonomo" class="bg-[#24292e] text-white px-6 py-3 rounded-button font-medium hover:bg-[#24292e]/90 transition whitespace-nowrap flex items-center justify-center w-full">
                             <i class="ri-github-fill mr-2"></i>
                             Ver Repositorio
                         </a>
@@ -385,8 +442,8 @@
                                     <i class="ri-check-line ri-lg"></i>
                                 </div>
                                 <div>
-                                    <span class="font-medium text-gray-900">Biblioteca NewPing</span>
-                                    <p class="text-sm text-gray-600">Para un mejor manejo de los sensores ultrasónicos</p>
+                                    <span class="font-medium text-gray-900">Biblioteca Servo.h</span>
+                                    <p class="text-sm text-gray-600">Para un manejo del servo</p>
                                 </div>
                             </li>
                             <li class="flex items-start">
@@ -394,8 +451,6 @@
                                     <i class="ri-check-line ri-lg"></i>
                                 </div>
                                 <div>
-                                    <span class="font-medium text-gray-900">Biblioteca L298N</span>
-                                    <p class="text-sm text-gray-600">Facilita el control del driver de motores</p>
                                 </div>
                             </li>
                         </ul>
@@ -554,10 +609,10 @@ long readUltrasonic() {
                 <div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-6">Diagrama de Conexiones</h3>
                     <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
-                        <img src="https://readdy.ai/api/search-image?query=A%20detailed%20circuit%20diagram%20showing%20Arduino%20Uno%20connections%20to%20ultrasonic%20sensors%20and%20L298N%20motor%20driver.%20The%20diagram%20should%20be%20clear%2C%20professional%2C%20with%20a%20white%20background%20and%20proper%20labeling%20of%20all%20components%20and%20pins.%20The%20connections%20should%20be%20color-coded%20for%20clarity&width=600&height=400&seq=circuit1&orientation=landscape" alt="Diagrama de conexiones" class="w-full rounded-lg">
+                        <img src="https://raw.githubusercontent.com/NGRPAI5/P-gina-web-vehiculo-autonomo/main/bluebot-autonomous-car-HCSR04-breadboard-diagram.png" alt="Diagrama de conexiones" class="w-full rounded-lg">
                     </div>
                     <div class="mt-4 text-sm text-gray-600">
-                        <p>Diagrama detallado de las conexiones entre el Arduino Uno, los sensores ultrasónicos HC-SR04 y el driver de motor L298N.</p>
+                        <p>Diagrama detallado de las conexiones entre el Arduino Uno, los sensores ultrasónicos HC-SR04, LDR, TCRT5000, motor, servo, baterías y el driver de motor L298N. Y mucho más.</p>
                     </div>
                 </div>
                 
@@ -567,76 +622,36 @@ long readUltrasonic() {
                         <ol class="space-y-4">
                             <li class="flex">
                                 <span class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0">1</span>
-                                <p class="text-gray-700">Montar los motores y ruedas en el chasis siguiendo las instrucciones del fabricante.</p>
+                                <p class="text-gray-700">Imprimir todas las piezas del repositorio de Github y montarlas a partir del PDF.</p>
                             </li>
                             <li class="flex">
                                 <span class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0">2</span>
-                                <p class="text-gray-700">Fijar el Arduino Uno en la parte superior del chasis utilizando tornillos o cinta de doble cara.</p>
+                                <p class="text-gray-700">Una vez montado el chasis, hacer toda la conexión de cables tal y como indica el diagrama.</p>
                             </li>
                             <li class="flex">
                                 <span class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0">3</span>
-                                <p class="text-gray-700">Montar el driver L298N cerca de los motores para minimizar la longitud de los cables.</p>
+                                <p class="text-gray-700">Instalar la electrónica por todo el chasis procurando que el sensor ultrasónico esté delante, el LDR lo más visible posible y los sensores TCRT5000 a los lados del vehículo.</p>
                             </li>
                             <li class="flex">
                                 <span class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0">4</span>
-                                <p class="text-gray-700">Instalar los sensores ultrasónicos en la parte frontal y lateral derecha del chasis.</p>
+                                <p class="text-gray-700">Subir el código al Arduino.</p>
                             </li>
                             <li class="flex">
                                 <span class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0">5</span>
-                                <p class="text-gray-700">Realizar las conexiones eléctricas según el diagrama proporcionado.</p>
+                                <p class="text-gray-700">Conectar la batería principal y auxiliar al coche.</p>
                             </li>
                             <li class="flex">
                                 <span class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0">6</span>
-                                <p class="text-gray-700">Conectar la fuente de alimentación (batería o powerbank) al driver L298N.</p>
+                                <p class="text-gray-700">Probarlo por un circuito de pruebaas.</p>
                             </li>
                             <li class="flex">
                                 <span class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0">7</span>
-                                <p class="text-gray-700">Cargar el código en el Arduino utilizando el cable USB y el IDE de Arduino.</p>
+                                <p class="text-gray-700">Ajustar los componentes y código.</p>
                             </li>
                         </ol>
                     </div>
                 </div>
             </div>
-            
-            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                        <i class="ri-file-pdf-line text-primary ri-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Manual Completo</h3>
-                    <p class="text-gray-600 mb-4">Documentación detallada con instrucciones paso a paso, explicaciones técnicas y consejos de solución de problemas.</p>
-                    <a href="#" class="text-primary font-medium hover:text-primary/80 flex items-center">
-                        Descargar PDF
-                        <i class="ri-download-line ml-1"></i>
-                    </a>
-                </div>
-                
-                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                        <i class="ri-tools-line text-primary ri-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Solución de Problemas</h3>
-                    <p class="text-gray-600 mb-4">Guía para identificar y resolver los problemas más comunes que pueden surgir durante la construcción y operación.</p>
-                    <a href="#" class="text-primary font-medium hover:text-primary/80 flex items-center">
-                        Ver Guía
-                        <i class="ri-arrow-right-line ml-1"></i>
-                    </a>
-                </div>
-                
-                <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                        <i class="ri-lightbulb-line text-primary ri-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Ideas de Mejora</h3>
-                    <p class="text-gray-600 mb-4">Sugerencias para expandir y mejorar el proyecto, como añadir más sensores, control remoto o inteligencia artificial.</p>
-                    <a href="#" class="text-primary font-medium hover:text-primary/80 flex items-center">
-                        Explorar Ideas
-                        <i class="ri-arrow-right-line ml-1"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Sección de Demostración -->
     <section class="py-16 bg-gray-50">
@@ -728,7 +743,7 @@ long readUltrasonic() {
                             </div>
                             <div>
                                 <h4 class="font-medium text-gray-900 mb-1">Correo Electrónico</h4>
-                                <p class="text-gray-600">proyecto@vehiculoautonomo.com</p>
+                                <p class="text-gray-600">nicolas.garcia@campus.xaloc.org</p>
                             </div>
                         </div>
                         
@@ -738,7 +753,7 @@ long readUltrasonic() {
                             </div>
                             <div>
                                 <h4 class="font-medium text-gray-900 mb-1">GitHub</h4>
-                                <p class="text-gray-600">github.com/usuario/vehiculo-autonomo-arduino</p>
+                                <p class="text-gray-600">https://github.com/NGRPAI5/Vehiculo_autonomo</p>
                             </div>
                         </div>
                         
@@ -748,7 +763,7 @@ long readUltrasonic() {
                             </div>
                             <div>
                                 <h4 class="font-medium text-gray-900 mb-1">Ubicación</h4>
-                                <p class="text-gray-600">Universidad Politécnica de Madrid<br>Escuela Técnica Superior de Ingeniería</p>
+                                <p class="text-gray-600">Escuela Xaloc<br>Cuarto de la ESO</p>
                             </div>
                         </div>
                     </div>
