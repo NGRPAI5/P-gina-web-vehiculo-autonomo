@@ -409,134 +409,131 @@
                             <pre class="text-gray-300 text-sm font-mono">
 // Vehículo Autónomo con Arduino
 // Proyecto Final de Robótica
-#include &lt;NewPing.h&gt;
+#include <Servo.h>
 
-// Definición de pines
-#define TRIGGER_PIN_FRONT  7
-#define ECHO_PIN_FRONT     8
-#define TRIGGER_PIN_RIGHT  11
-#define ECHO_PIN_RIGHT     12
-#define MAX_DISTANCE       200
+const int Rmotor_forward_pin = 3;
+const int Rmotor_backward_pin = 2;
+const int Rmotor_speed_pin = 10;
 
-// Pines del driver L298N
-#define ENA 3
-#define ENB 5
-#define IN1 2
-#define IN2 4
-#define IN3 6
-#define IN4 7
+const int servoPin = 9;
+Servo steeringServo;
 
-// Configuración de sensores ultrasónicos
-NewPing sonarFront(TRIGGER_PIN_FRONT, ECHO_PIN_FRONT, MAX_DISTANCE);
-NewPing sonarRight(TRIGGER_PIN_RIGHT, ECHO_PIN_RIGHT, MAX_DISTANCE);
+const int triggerPin = 11;
+const int echoPin = 7;
 
-// Variables para almacenar distancias
-int distanceFront;
-int distanceRight;
-int safeDistance = 20; // Distancia segura en cm
+const int leftIRPin = A0;
+const int rightIRPin = A1;
+const int leftIRthreshold = 200;
+const int rightIRthreshold = 200;
+
+const int brakingDistance = 10;
+
+const int lightSensorPin = A2;
+const int lightPin = 12;
+const int lightPin2 = 13; 
+const int lightThreshold = 500;
+
+int speedR = 255;
+bool stoppedRecently = false;
 
 void setup() {
-  // Inicializar comunicación serial
+  pinMode(Rmotor_forward_pin, OUTPUT);
+  pinMode(Rmotor_backward_pin, OUTPUT);
+  pinMode(Rmotor_speed_pin, OUTPUT);
+
+  pinMode(triggerPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  pinMode(lightSensorPin, INPUT);
+  pinMode(lightPin, OUTPUT);
+  pinMode(lightPin2, OUTPUT);
+
+  steeringServo.attach(servoPin);
+  steeringServo.write(80);
+
   Serial.begin(9600);
-  
-  // Configurar pines del driver como salidas
-  pinMode(ENA, OUTPUT);
-  pinMode(ENB, OUTPUT);
-  pinMode(IN1, OUTPUT);
-  pinMode(IN2, OUTPUT);
-  pinMode(IN3, OUTPUT);
-  pinMode(IN4, OUTPUT);
-  
-  // Iniciar con el vehículo detenido
-  stopMotors();
-  
-  // Esperar 2 segundos antes de iniciar
-  delay(2000);
 }
 
 void loop() {
-  // Leer distancias desde los sensores
-  readSensors();
-  
-  // Imprimir distancias en el monitor serial
-  Serial.print("Distancia frontal: ");
-  Serial.print(distanceFront);
-  Serial.print(" cm, Distancia derecha: ");
-  Serial.print(distanceRight);
-  Serial.println(" cm");
-  
-  // Algoritmo de navegación
-  if (distanceFront &lt; safeDistance) {
-    // Obstáculo detectado al frente
+  int leftIR = analogRead(leftIRPin);
+  int rightIR = analogRead(rightIRPin);
+
+  int lightLevel = analogRead(lightSensorPin);
+
+  if (lightLevel > lightThreshold) {
+    digitalWrite(lightPin, HIGH);  
+    digitalWrite(lightPin2, HIGH); 
+  } else {
+    digitalWrite(lightPin, LOW);   
+    digitalWrite(lightPin2, LOW);
+  }
+
+  long distance = readUltrasonic();
+
+  if (distance > 0 && distance <= brakingDistance) {
     stopMotors();
-    delay(300);
-    
-    // Decidir hacia dónde girar
-    if (distanceRight &gt; safeDistance) {
-      // Espacio libre a la derecha
-      turnRight();
-      delay(800);
+    Serial.println("Obstáculo detectado. Deteniendo...");
+    return;
+  }
+
+  if (leftIR < leftIRthreshold && rightIR < rightIRthreshold) {
+    if (!stoppedRecently) {
+      stopMotors();
+      steeringServo.write(80);  
+      Serial.println("Línea detectada en ambos sensores. Deteniendo por 5 segundos...");
+      delay(5000);
+      stoppedRecently = true;
     } else {
-      // Girar a la izquierda por defecto
-      turnLeft();
-      delay(800);
+      moveForward();
+      steeringServo.write(80);  
+      Serial.println("Línea aún detectada, pero continuando el avance...");
     }
   } else {
-    // Camino libre, avanzar
-    moveForward();
+    stoppedRecently = false;
+
+    if (leftIR < leftIRthreshold) {
+      moveForward();
+      steeringServo.write(30);  
+      Serial.println("Girando a la izquierda...");
+    } else if (rightIR < rightIRthreshold) {
+      moveForward();
+      steeringServo.write(110);  
+      Serial.println("Girando a la derecha...");
+    } else {
+      moveForward();
+      steeringServo.write(80);  
+      Serial.println("Avanzando recto...");
+    }
   }
-  
-  // Pequeña pausa para estabilidad
-  delay(100);
+
+  Serial.print("IR Izquierdo: "); Serial.print(leftIR);
+  Serial.print(" | IR Derecho: "); Serial.print(rightIR);
+  Serial.print(" | Distancia: "); Serial.print(distance);
+  Serial.print(" | Nivel de luz: "); Serial.println(lightLevel);
 }
 
-// Función para leer todos los sensores
-void readSensors() {
-  distanceFront = sonarFront.ping_cm();
-  delay(30); // Pequeña pausa entre lecturas
-  distanceRight = sonarRight.ping_cm();
-  
-  // Corregir valores de 0 (fuera de rango)
-  if (distanceFront == 0) distanceFront = MAX_DISTANCE;
-  if (distanceRight == 0) distanceRight = MAX_DISTANCE;
-}
-
-// Funciones de control de motores
 void moveForward() {
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENA, 180); // Velocidad motor A
-  analogWrite(ENB, 180); // Velocidad motor B
-}
-
-void turnRight() {
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, HIGH);
-  analogWrite(ENA, 200);
-  analogWrite(ENB, 200);
-}
-
-void turnLeft() {
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENA, 200);
-  analogWrite(ENB, 200);
+  digitalWrite(Rmotor_forward_pin, HIGH);
+  digitalWrite(Rmotor_backward_pin, LOW);
+  analogWrite(Rmotor_speed_pin, speedR);
 }
 
 void stopMotors() {
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENA, 0);
-  analogWrite(ENB, 0);
+  digitalWrite(Rmotor_forward_pin, LOW);
+  digitalWrite(Rmotor_backward_pin, LOW);
+  analogWrite(Rmotor_speed_pin, 0);
 }
+
+long readUltrasonic() {
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  long duration = pulseIn(echoPin, HIGH);
+  return duration / 29 / 2;
+}
+
                             </pre>
                         </div>
                     </div>
