@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VehículoBot - Proyecto de Vehículo Autónomo con Arduino</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#4f46e5", secondary: "#10b981" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body {
+          font-family: 'Inter', sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Navegación -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+      <nav
+        class="container mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center">
+          <a href="#" class="text-2xl font-['Pacifico'] text-primary"
+            >ArduinoBot</a
+          >
+        </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#inicio" class="text-gray-700 hover:text-primary font-medium"
+            >Inicio</a
+          >
+          <a
+            href="#como-funciona"
+            class="text-gray-700 hover:text-primary font-medium"
+            >Funcionamiento</a
+          >
+          <a
+            href="#materiales"
+            class="text-gray-700 hover:text-primary font-medium"
+            >Materiales</a
+          >
+          <a href="#codigo" class="text-gray-700 hover:text-primary font-medium"
+            >Código</a
+          >
+          <a
+            href="#documentacion"
+            class="text-gray-700 hover:text-primary font-medium"
+            >Documentación</a
+          >
+          <a
+            href="#contacto"
+            class="text-gray-700 hover:text-primary font-medium"
+            >Contacto</a
+          >
+        </div>
+        <div class="md:hidden flex items-center">
+          <button
+            id="mobile-menu-button"
+            class="w-10 h-10 flex items-center justify-center text-gray-700"
+          >
+            <i class="ri-menu-line ri-lg"></i>
+          </button>
+        </div>
+      </nav>
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white px-4 py-2 shadow-lg"
+      >
+        <div class="flex flex-col space-y-3 pb-3">
+          <a
+            href="#inicio"
+            class="text-gray-700 hover:text-primary font-medium py-2"
+            >Inicio</a
+          >
+          <a
+            href="#como-funciona"
+            class="text-gray-700 hover:text-primary font-medium py-2"
+            >Funcionamiento</a
+          >
+          <a
+            href="#materiales"
+            class="text-gray-700 hover:text-primary font-medium py-2"
+            >Materiales</a
+          >
+          <a
+            href="#codigo"
+            class="text-gray-700 hover:text-primary font-medium py-2"
+            >Código</a
+          >
+          <a
+            href="#documentacion"
+            class="text-gray-700 hover:text-primary font-medium py-2"
+            >Documentación</a
+          >
+          <a
+            href="#contacto"
+            class="text-gray-700 hover:text-primary font-medium py-2"
+            >Contacto</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- Sección Hero -->
+    <section
+      id="inicio"
+      class="w-full relative overflow-hidden"
+      style="background-image: url('https://readdy.ai/api/search-image?query=A%20modern%20technological%20background%20with%20circuit%20board%20patterns%2C%20soft%20blue%20gradient%20lighting%2C%20abstract%20digital%20elements%2C%20creating%20a%20clean%20high-tech%20atmosphere%20perfect%20for%20showcasing%20an%20Arduino%20robot%20project.%20The%20left%20side%20has%20a%20smooth%20gradient%20to%20white%20for%20text%20placement%2C%20while%20the%20right%20side%20shows%20more%20technological%20elements&width=1920&height=800&seq=hero1&orientation=landscape'); background-size: cover; background-position: center;"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent"
+      ></div>
+      <div class="container mx-auto px-4 py-20 md:py-32 relative">
+        <div class="w-full max-w-2xl">
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Vehículo Autónomo con Arduino
+          </h1>
+          <p class="text-lg md:text-xl text-gray-700 mb-8">
+            Proyecto final de robótica que demuestra la implementación de un
+            sistema autónomo de navegación utilizando la plataforma Arduino y
+            sensores ultrasónicos para detección de obstáculos.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a
+              href="#codigo"
+              class="bg-primary text-white px-8 py-3 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap flex items-center justify-center"
+            >
+              <i class="ri-github-fill mr-2"></i>
+              Ver en GitHub
+            </a>
+            <a
+              href="#documentacion"
+              class="bg-white text-primary border border-primary px-8 py-3 rounded-button font-medium hover:bg-gray-50 transition whitespace-nowrap flex items-center justify-center"
+            >
+              <i class="ri-file-list-3-line mr-2"></i>
+              Documentación
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Características -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Características Principales
+          </h2>
+          <p class="text-gray-600 max-w-3xl mx-auto">
+            Nuestro vehículo autónomo combina hardware y software para crear un
+            sistema de navegación inteligente capaz de evitar obstáculos y
+            seguir rutas predefinidas.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            >
+              <i class="ri-radar-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Detección de Obstáculos
+            </h3>
+            <p class="text-gray-600">
+              Utiliza sensores ultrasónicos para detectar obstáculos en tiempo
+              real y calcular distancias precisas para evitar colisiones.
+            </p>
+          </div>
+
+          <div
+            class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            >
+              <i class="ri-route-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Navegación Autónoma
+            </h3>
+            <p class="text-gray-600">
+              Algoritmos de toma de decisiones que permiten al vehículo navegar
+              de forma independiente y adaptarse a diferentes entornos.
+            </p>
+          </div>
+
+          <div
+            class="bg-gray-50 p-6 rounded-lg shadow-sm hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            >
+              <i class="ri-code-s-slash-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Código Modular
+            </h3>
+            <p class="text-gray-600">
+              Diseño de software modular y bien documentado que facilita la
+              comprensión, modificación y ampliación del proyecto.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección ¿Cómo Funciona? -->
+    <section id="como-funciona" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo Funciona?</h2>
+          <p class="text-gray-600 max-w-3xl mx-auto">
+            Descubre el funcionamiento interno de nuestro vehículo autónomo y
+            cómo interactúan sus diferentes componentes para lograr una
+            navegación inteligente.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <img
+              src="https://readdy.ai/api/search-image?query=A%20detailed%20technical%20diagram%20showing%20the%20inner%20workings%20of%20an%20Arduino-based%20autonomous%20vehicle%20with%20clear%20labels%20for%20sensors%2C%20motors%2C%20and%20microcontroller%20connections.%20The%20diagram%20should%20be%20technical%20but%20clean%20and%20easy%20to%20understand%2C%20with%20a%20white%20background%20and%20professional%20appearance&width=600&height=500&seq=diagram1&orientation=landscape"
+              alt="Diagrama de funcionamiento"
+              class="rounded-lg shadow-md w-full object-cover"
+            />
+          </div>
+
+          <div class="space-y-8">
+            <div>
+              <h3
+                class="text-xl font-semibold text-gray-900 mb-3 flex items-center"
+              >
+                <span
+                  class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3"
+                  >1</span
+                >
+                Sistema de Sensores
+              </h3>
+              <p class="text-gray-600 pl-11">
+                El vehículo utiliza sensores ultrasónicos HC-SR04 para medir
+                distancias. Estos sensores emiten ondas ultrasónicas que rebotan
+                en los objetos y regresan al receptor, permitiendo calcular la
+                distancia mediante el tiempo de viaje de la señal.
+              </p>
+            </div>
+
+            <div>
+              <h3
+                class="text-xl font-semibold text-gray-900 mb-3 flex items-center"
+              >
+                <span
+                  class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3"
+                  >2</span
+                >
+                Procesamiento de Datos
+              </h3>
+              <p class="text-gray-600 pl-11">
+                La placa Arduino procesa la información de los sensores en
+                tiempo real. El microcontrolador analiza las distancias
+                detectadas y toma decisiones sobre la dirección y velocidad del
+                vehículo según los algoritmos programados.
+              </p>
+            </div>
+
+            <div>
+              <h3
+                class="text-xl font-semibold text-gray-900 mb-3 flex items-center"
+              >
+                <span
+                  class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3"
+                  >3</span
+                >
+                Sistema de Movimiento
+              </h3>
+              <p class="text-gray-600 pl-11">
+                Los motores DC conectados a través de un driver L298N reciben
+                señales de control desde el Arduino. Esto permite al vehículo
+                avanzar, retroceder, girar a la izquierda o derecha según sea
+                necesario para evitar obstáculos.
+              </p>
+            </div>
+
+            <div>
+              <h3
+                class="text-xl font-semibold text-gray-900 mb-3 flex items-center"
+              >
+                <span
+                  class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3"
+                  >4</span
+                >
+                Algoritmo de Navegación
+              </h3>
+              <p class="text-gray-600 pl-11">
+                El software implementa un algoritmo de toma de decisiones que
+                prioriza rutas libres de obstáculos. Cuando detecta un objeto a
+                menos de 20 cm, el vehículo se detiene, evalúa las posibles
+                direcciones y elige la ruta más despejada.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Materiales -->
+    <section id="materiales" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Materiales Necesarios
+          </h2>
+          <p class="text-gray-600 max-w-3xl mx-auto">
+            Lista completa de componentes y herramientas para construir tu
+            propio vehículo autónomo Arduino.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <h3
+              class="text-xl font-semibold text-gray-900 mb-4 pb-3 border-b border-gray-200"
+            >
+              Componentes Electrónicos
+            </h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900">Arduino Uno R3</span>
+                  <p class="text-sm text-gray-600">
+                    Microcontrolador principal para el procesamiento de datos
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900"
+                    >2 × Sensores Ultrasónicos HC-SR04</span
+                  >
+                  <p class="text-sm text-gray-600">
+                    Para la detección de obstáculos en diferentes ángulos
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900"
+                    >Driver de Motor L298N</span
+                  >
+                  <p class="text-sm text-gray-600">
+                    Controlador para los motores DC
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900"
+                    >4 × Motores DC con Ruedas</span
+                  >
+                  <p class="text-sm text-gray-600">
+                    Para el sistema de propulsión del vehículo
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900"
+                    >Batería de 9V o Powerbank</span
+                  >
+                  <p class="text-sm text-gray-600">
+                    Fuente de alimentación para el sistema
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900">Cables Jumper</span>
+                  <p class="text-sm text-gray-600">
+                    Para las conexiones entre componentes
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <h3
+              class="text-xl font-semibold text-gray-900 mb-4 pb-3 border-b border-gray-200"
+            >
+              Materiales Estructurales y Herramientas
+            </h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900"
+                    >Chasis para Robot</span
+                  >
+                  <p class="text-sm text-gray-600">
+                    Base estructural para montar todos los componentes
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900">Protoboard Mini</span>
+                  <p class="text-sm text-gray-600">
+                    Para conexiones temporales durante el desarrollo
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900"
+                    >Tornillos y Tuercas</span
+                  >
+                  <p class="text-sm text-gray-600">
+                    Para fijar componentes al chasis
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900"
+                    >Soldador y Estaño</span
+                  >
+                  <p class="text-sm text-gray-600">
+                    Para conexiones permanentes si es necesario
+                  </p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900"
+                    >Destornilladores</span
+                  >
+                  <p class="text-sm text-gray-600">Para el montaje mecánico</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div
+                  class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                >
+                  <i class="ri-checkbox-circle-line ri-lg"></i>
+                </div>
+                <div>
+                  <span class="font-medium text-gray-900">Cable USB</span>
+                  <p class="text-sm text-gray-600">
+                    Para programar el Arduino desde el ordenador
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-12 bg-gray-50 p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">
+            Presupuesto Estimado
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Componente
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Cantidad
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Precio Unitario
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Precio Total
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    Arduino Uno R3
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    1
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €20.00
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €20.00
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    Sensores HC-SR04
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    2
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €2.50
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €5.00
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    Driver L298N
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    1
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €5.00
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €5.00
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    Motores DC con Ruedas
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    4
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €3.00
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €12.00
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    Chasis para Robot
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    1
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €15.00
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €15.00
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    Otros (cables, batería, etc.)
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    -
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    -
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    €18.00
+                  </td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                  >
+                    TOTAL
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                  ></td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                  ></td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary"
+                  >
+                    €75.00
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Sección de Código -->
+    <section id="codigo" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Código del Proyecto
+          </h2>
+          <p class="text-gray-600 max-w-3xl mx-auto">
+            El código fuente completo está disponible en GitHub. A continuación,
+            se muestran los aspectos más importantes del programa.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                Repositorio GitHub
+              </h3>
+              <p class="text-gray-600 mb-6">
+                Todo el código fuente y la documentación están disponibles en
+                nuestro repositorio público.
+              </p>
+              <a
+                href="https://github.com/usuario/vehiculo-autonomo-arduino"
+                class="bg-[#24292e] text-white px-6 py-3 rounded-button font-medium hover:bg-[#24292e]/90 transition whitespace-nowrap flex items-center justify-center w-full"
+              >
+                <i class="ri-github-fill mr-2"></i>
+                Ver Repositorio
+              </a>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                Requisitos de Software
+              </h3>
+              <ul class="space-y-3">
+                <li class="flex items-start">
+                  <div
+                    class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                  >
+                    <i class="ri-check-line ri-lg"></i>
+                  </div>
+                  <div>
+                    <span class="font-medium text-gray-900"
+                      >Arduino IDE 2.0+</span
+                    >
+                    <p class="text-sm text-gray-600">
+                      Entorno de desarrollo para programar la placa
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <div
+                    class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                  >
+                    <i class="ri-check-line ri-lg"></i>
+                  </div>
+                  <div>
+                    <span class="font-medium text-gray-900"
+                      >Biblioteca NewPing</span
+                    >
+                    <p class="text-sm text-gray-600">
+                      Para un mejor manejo de los sensores ultrasónicos
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <div
+                    class="w-6 h-6 flex items-center justify-center mt-0.5 mr-3 text-primary"
+                  >
+                    <i class="ri-check-line ri-lg"></i>
+                  </div>
+                  <div>
+                    <span class="font-medium text-gray-900"
+                      >Biblioteca L298N</span
+                    >
+                    <p class="text-sm text-gray-600">
+                      Facilita el control del driver de motores
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="lg:col-span-2">
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                Código Principal
+              </h3>
+              <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
+                <pre class="text-gray-300 text-sm font-mono">
+// Vehículo Autónomo con Arduino
+// Proyecto Final de Robótica
+#include &lt;NewPing.h&gt;
+
+// Definición de pines
+#define TRIGGER_PIN_FRONT  7
+#define ECHO_PIN_FRONT     8
+#define TRIGGER_PIN_RIGHT  11
+#define ECHO_PIN_RIGHT     12
+#define MAX_DISTANCE       200
+
+// Pines del driver L298N
+#define ENA 3
+#define ENB 5
+#define IN1 2
+#define IN2 4
+#define IN3 6
+#define IN4 7
+
+// Configuración de sensores ultrasónicos
+NewPing sonarFront(TRIGGER_PIN_FRONT, ECHO_PIN_FRONT, MAX_DISTANCE);
+NewPing sonarRight(TRIGGER_PIN_RIGHT, ECHO_PIN_RIGHT, MAX_DISTANCE);
+
+// Variables para almacenar distancias
+int distanceFront;
+int distanceRight;
+int safeDistance = 20; // Distancia segura en cm
+
+void setup() {
+  // Inicializar comunicación serial
+  Serial.begin(9600);
+  
+  // Configurar pines del driver como salidas
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  
+  // Iniciar con el vehículo detenido
+  stopMotors();
+  
+  // Esperar 2 segundos antes de iniciar
+  delay(2000);
+}
+
+void loop() {
+  // Leer distancias desde los sensores
+  readSensors();
+  
+  // Imprimir distancias en el monitor serial
+  Serial.print("Distancia frontal: ");
+  Serial.print(distanceFront);
+  Serial.print(" cm, Distancia derecha: ");
+  Serial.print(distanceRight);
+  Serial.println(" cm");
+  
+  // Algoritmo de navegación
+  if (distanceFront &lt; safeDistance) {
+    // Obstáculo detectado al frente
+    stopMotors();
+    delay(300);
+    
+    // Decidir hacia dónde girar
+    if (distanceRight &gt; safeDistance) {
+      // Espacio libre a la derecha
+      turnRight();
+      delay(800);
+    } else {
+      // Girar a la izquierda por defecto
+      turnLeft();
+      delay(800);
+    }
+  } else {
+    // Camino libre, avanzar
+    moveForward();
+  }
+  
+  // Pequeña pausa para estabilidad
+  delay(100);
+}
+
+// Función para leer todos los sensores
+void readSensors() {
+  distanceFront = sonarFront.ping_cm();
+  delay(30); // Pequeña pausa entre lecturas
+  distanceRight = sonarRight.ping_cm();
+  
+  // Corregir valores de 0 (fuera de rango)
+  if (distanceFront == 0) distanceFront = MAX_DISTANCE;
+  if (distanceRight == 0) distanceRight = MAX_DISTANCE;
+}
+
+// Funciones de control de motores
+void moveForward() {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 180); // Velocidad motor A
+  analogWrite(ENB, 180); // Velocidad motor B
+}
+
+void turnRight() {
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  analogWrite(ENA, 200);
+  analogWrite(ENB, 200);
+}
+
+void turnLeft() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 200);
+  analogWrite(ENB, 200);
+}
+
+void stopMotors() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+}
+                            </pre
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Documentación -->
+    <section id="documentacion" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Documentación Técnica
+          </h2>
+          <p class="text-gray-600 max-w-3xl mx-auto">
+            Toda la información necesaria para comprender, construir y modificar
+            el proyecto.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">
+              Diagrama de Conexiones
+            </h3>
+            <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+              <img
+                src="https://readdy.ai/api/search-image?query=A%20detailed%20circuit%20diagram%20showing%20Arduino%20Uno%20connections%20to%20ultrasonic%20sensors%20and%20L298N%20motor%20driver.%20The%20diagram%20should%20be%20clear%2C%20professional%2C%20with%20a%20white%20background%20and%20proper%20labeling%20of%20all%20components%20and%20pins.%20The%20connections%20should%20be%20color-coded%20for%20clarity&width=600&height=400&seq=circuit1&orientation=landscape"
+                alt="Diagrama de conexiones"
+                class="w-full rounded-lg"
+              />
+            </div>
+            <div class="mt-4 text-sm text-gray-600">
+              <p>
+                Diagrama detallado de las conexiones entre el Arduino Uno, los
+                sensores ultrasónicos HC-SR04 y el driver de motor L298N.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">
+              Guía de Ensamblaje
+            </h3>
+            <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+              <ol class="space-y-4">
+                <li class="flex">
+                  <span
+                    class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    >1</span
+                  >
+                  <p class="text-gray-700">
+                    Montar los motores y ruedas en el chasis siguiendo las
+                    instrucciones del fabricante.
+                  </p>
+                </li>
+                <li class="flex">
+                  <span
+                    class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    >2</span
+                  >
+                  <p class="text-gray-700">
+                    Fijar el Arduino Uno en la parte superior del chasis
+                    utilizando tornillos o cinta de doble cara.
+                  </p>
+                </li>
+                <li class="flex">
+                  <span
+                    class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    >3</span
+                  >
+                  <p class="text-gray-700">
+                    Montar el driver L298N cerca de los motores para minimizar
+                    la longitud de los cables.
+                  </p>
+                </li>
+                <li class="flex">
+                  <span
+                    class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    >4</span
+                  >
+                  <p class="text-gray-700">
+                    Instalar los sensores ultrasónicos en la parte frontal y
+                    lateral derecha del chasis.
+                  </p>
+                </li>
+                <li class="flex">
+                  <span
+                    class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    >5</span
+                  >
+                  <p class="text-gray-700">
+                    Realizar las conexiones eléctricas según el diagrama
+                    proporcionado.
+                  </p>
+                </li>
+                <li class="flex">
+                  <span
+                    class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    >6</span
+                  >
+                  <p class="text-gray-700">
+                    Conectar la fuente de alimentación (batería o powerbank) al
+                    driver L298N.
+                  </p>
+                </li>
+                <li class="flex">
+                  <span
+                    class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center mr-3 flex-shrink-0"
+                    >7</span
+                  >
+                  <p class="text-gray-700">
+                    Cargar el código en el Arduino utilizando el cable USB y el
+                    IDE de Arduino.
+                  </p>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            >
+              <i class="ri-file-pdf-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">
+              Manual Completo
+            </h3>
+            <p class="text-gray-600 mb-4">
+              Documentación detallada con instrucciones paso a paso,
+              explicaciones técnicas y consejos de solución de problemas.
+            </p>
+            <a
+              href="#"
+              class="text-primary font-medium hover:text-primary/80 flex items-center"
+            >
+              Descargar PDF
+              <i class="ri-download-line ml-1"></i>
+            </a>
+          </div>
+
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            >
+              <i class="ri-tools-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">
+              Solución de Problemas
+            </h3>
+            <p class="text-gray-600 mb-4">
+              Guía para identificar y resolver los problemas más comunes que
+              pueden surgir durante la construcción y operación.
+            </p>
+            <a
+              href="#"
+              class="text-primary font-medium hover:text-primary/80 flex items-center"
+            >
+              Ver Guía
+              <i class="ri-arrow-right-line ml-1"></i>
+            </a>
+          </div>
+
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+            >
+              <i class="ri-lightbulb-line text-primary ri-xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">
+              Ideas de Mejora
+            </h3>
+            <p class="text-gray-600 mb-4">
+              Sugerencias para expandir y mejorar el proyecto, como añadir más
+              sensores, control remoto o inteligencia artificial.
+            </p>
+            <a
+              href="#"
+              class="text-primary font-medium hover:text-primary/80 flex items-center"
+            >
+              Explorar Ideas
+              <i class="ri-arrow-right-line ml-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Demostración -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Demostración en Acción
+          </h2>
+          <p class="text-gray-600 max-w-3xl mx-auto">
+            Mira cómo funciona nuestro vehículo autónomo en diferentes entornos
+            y situaciones.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm overflow-hidden">
+          <div
+            class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden bg-gray-200 flex items-center justify-center"
+          >
+            <div class="text-center p-8">
+              <i class="ri-video-line text-gray-400 text-6xl mb-4"></i>
+              <p class="text-gray-600">
+                Video de demostración del vehículo autónomo en funcionamiento
+              </p>
+              <button
+                class="mt-4 bg-primary text-white px-6 py-2 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap flex items-center justify-center mx-auto"
+              >
+                <i class="ri-play-line mr-2"></i>
+                Ver Video
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div class="bg-white p-4 rounded-lg shadow-sm overflow-hidden">
+            <div
+              class="aspect-w-4 aspect-h-3 rounded-lg overflow-hidden bg-gray-200 mb-4"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=An%20Arduino-based%20autonomous%20vehicle%20navigating%20through%20a%20simple%20obstacle%20course%20on%20a%20flat%20surface.%20The%20robot%20should%20be%20clearly%20visible%20with%20its%20sensors%20and%20components.%20The%20image%20should%20be%20well-lit%20with%20a%20clean%20background&width=400&height=300&seq=demo1&orientation=landscape"
+                alt="Demostración 1"
+                class="object-cover"
+              />
+            </div>
+            <h3 class="font-medium text-gray-900 mb-2">Navegación Básica</h3>
+            <p class="text-sm text-gray-600">
+              El vehículo demostrando su capacidad para detectar y evitar
+              obstáculos simples.
+            </p>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg shadow-sm overflow-hidden">
+            <div
+              class="aspect-w-4 aspect-h-3 rounded-lg overflow-hidden bg-gray-200 mb-4"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Close-up%20view%20of%20an%20Arduino-based%20robot%20vehicle%20showing%20the%20ultrasonic%20sensors%20in%20action%2C%20with%20visible%20distance%20measurements%20being%20processed.%20The%20image%20should%20be%20technical%20and%20detailed%2C%20showing%20the%20working%20components&width=400&height=300&seq=demo2&orientation=landscape"
+                alt="Demostración 2"
+                class="object-cover"
+              />
+            </div>
+            <h3 class="font-medium text-gray-900 mb-2">Sensores en Acción</h3>
+            <p class="text-sm text-gray-600">
+              Detalle del funcionamiento de los sensores ultrasónicos y su
+              precisión en la medición.
+            </p>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg shadow-sm overflow-hidden">
+            <div
+              class="aspect-w-4 aspect-h-3 rounded-lg overflow-hidden bg-gray-200 mb-4"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=An%20Arduino%20robot%20vehicle%20navigating%20through%20a%20complex%20environment%20with%20multiple%20obstacles.%20The%20image%20should%20show%20the%20robot%20making%20decisions%20and%20changing%20direction%20to%20avoid%20collisions.%20Well-lit%20with%20good%20contrast&width=400&height=300&seq=demo3&orientation=landscape"
+                alt="Demostración 3"
+                class="object-cover"
+              />
+            </div>
+            <h3 class="font-medium text-gray-900 mb-2">Entorno Complejo</h3>
+            <p class="text-sm text-gray-600">
+              El vehículo navegando a través de un entorno con múltiples
+              obstáculos y espacios reducidos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section id="contacto" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Contacto</h2>
+          <p class="text-gray-600 max-w-3xl mx-auto">
+            ¿Tienes preguntas o sugerencias sobre el proyecto? ¡Nos encantaría
+            saber de ti!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">
+              Envíanos un Mensaje
+            </h3>
+            <form>
+              <div class="mb-4">
+                <label
+                  for="name"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Nombre</label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
+                  placeholder="Tu nombre"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="email"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Correo Electrónico</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
+                  placeholder="tu@email.com"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="subject"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Asunto</label
+                >
+                <input
+                  type="text"
+                  id="subject"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
+                  placeholder="Asunto del mensaje"
+                />
+              </div>
+              <div class="mb-6">
+                <label
+                  for="message"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Mensaje</label
+                >
+                <textarea
+                  id="message"
+                  rows="4"
+                  class="w-full px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition"
+                  placeholder="Escribe tu mensaje aquí..."
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap"
+              >
+                Enviar Mensaje
+              </button>
+            </form>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">
+              Información de Contacto
+            </h3>
+            <div class="space-y-6">
+              <div class="flex items-start">
+                <div
+                  class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4 flex-shrink-0"
+                >
+                  <i class="ri-mail-line text-primary"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900 mb-1">
+                    Correo Electrónico
+                  </h4>
+                  <p class="text-gray-600">proyecto@vehiculoautonomo.com</p>
+                </div>
+              </div>
+
+              <div class="flex items-start">
+                <div
+                  class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4 flex-shrink-0"
+                >
+                  <i class="ri-github-line text-primary"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900 mb-1">GitHub</h4>
+                  <p class="text-gray-600">
+                    github.com/usuario/vehiculo-autonomo-arduino
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start">
+                <div
+                  class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4 flex-shrink-0"
+                >
+                  <i class="ri-map-pin-line text-primary"></i>
+                </div>
+                <div>
+                  <h4 class="font-medium text-gray-900 mb-1">Ubicación</h4>
+                  <p class="text-gray-600">
+                    Universidad Politécnica de Madrid<br />Escuela Técnica
+                    Superior de Ingeniería
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <h3 class="text-xl font-semibold text-gray-900 mb-6">Síguenos</h3>
+              <div class="flex space-x-4">
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-[#1877F2] text-white rounded-full flex items-center justify-center hover:opacity-90 transition"
+                >
+                  <i class="ri-facebook-fill"></i>
+                </a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-[#1DA1F2] text-white rounded-full flex items-center justify-center hover:opacity-90 transition"
+                >
+                  <i class="ri-twitter-fill"></i>
+                </a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-[#E4405F] text-white rounded-full flex items-center justify-center hover:opacity-90 transition"
+                >
+                  <i class="ri-instagram-fill"></i>
+                </a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-[#0A66C2] text-white rounded-full flex items-center justify-center hover:opacity-90 transition"
+                >
+                  <i class="ri-linkedin-fill"></i>
+                </a>
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-[#FF0000] text-white rounded-full flex items-center justify-center hover:opacity-90 transition"
+                >
+                  <i class="ri-youtube-fill"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <a
+              href="#"
+              class="text-2xl font-['Pacifico'] text-white mb-4 inline-block"
+              >ArduinoBot</a
+            >
+            <p class="text-gray-400 mb-4">
+              Proyecto educativo de robótica autónoma basado en la plataforma
+              Arduino.
+            </p>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="ri-github-fill"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="ri-twitter-fill"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="ri-linkedin-fill"></i>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Enlaces Rápidos</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#inicio"
+                  class="text-gray-400 hover:text-white transition"
+                  >Inicio</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#como-funciona"
+                  class="text-gray-400 hover:text-white transition"
+                  >Funcionamiento</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#materiales"
+                  class="text-gray-400 hover:text-white transition"
+                  >Materiales</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#codigo"
+                  class="text-gray-400 hover:text-white transition"
+                  >Código</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#documentacion"
+                  class="text-gray-400 hover:text-white transition"
+                  >Documentación</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contacto"
+                  class="text-gray-400 hover:text-white transition"
+                  >Contacto</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Recursos</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Arduino Oficial</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Tutoriales</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Foro de Ayuda</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Proyectos Relacionados</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-400 hover:text-white transition"
+                  >Biblioteca de Componentes</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Boletín Informativo</h4>
+            <p class="text-gray-400 mb-4">
+              Suscríbete para recibir actualizaciones sobre este y otros
+              proyectos.
+            </p>
+            <form class="flex">
+              <input
+                type="email"
+                placeholder="Tu email"
+                class="px-4 py-2 rounded-l-button border-none outline-none text-gray-900 w-full"
+              />
+              <button
+                type="submit"
+                class="bg-primary text-white px-4 py-2 rounded-r-button whitespace-nowrap"
+              >
+                Suscribirse
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-400 text-sm">
+            © 2025 Proyecto Vehículo Autónomo Arduino. Todos los derechos
+            reservados.
+          </p>
+          <div class="flex space-x-6 mt-4 md:mt-0">
+            <a
+              href="#"
+              class="text-gray-400 hover:text-white transition text-sm"
+              >Política de Privacidad</a
+            >
+            <a
+              href="#"
+              class="text-gray-400 hover:text-white transition text-sm"
+              >Términos de Uso</a
+            >
+            <a
+              href="#"
+              class="text-gray-400 hover:text-white transition text-sm"
+              >Licencia</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script id="mobile-menu-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        mobileMenuButton.addEventListener("click", function () {
+          mobileMenu.classList.toggle("hidden");
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        const mobileLinks = mobileMenu.querySelectorAll("a");
+        mobileLinks.forEach((link) => {
+          link.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+          });
+        });
+      });
+    </script>
+
+    <script id="smooth-scroll-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Scroll suave para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+      });
+    </script>
+
+    <script id="form-validation-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const contactForm = document.querySelector("#contacto form");
+
+        if (contactForm) {
+          contactForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // Validación básica
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message").value;
+
+            if (!name || !email || !message) {
+              alert("Por favor, completa todos los campos obligatorios.");
+              return;
+            }
+
+            if (!isValidEmail(email)) {
+              alert("Por favor, introduce un correo electrónico válido.");
+              return;
+            }
+
+            // Simulación de envío exitoso
+            alert("¡Mensaje enviado con éxito! Gracias por contactarnos.");
+            contactForm.reset();
+          });
+        }
+
+        function isValidEmail(email) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email);
+        }
+      });
+    </script>
+  </body>
+</html>
